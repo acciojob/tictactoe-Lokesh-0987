@@ -1,1 +1,38 @@
 /*  your css code here. If applicable */
+body {
+  text-align: center;
+  font-family: Arial;
+  background: #f4f4f4;
+}
+
+.container {
+  margin-top: 40px;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 120px);
+  gap: 5px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.cell {
+  width: 120px;
+  height: 120px;
+  background-color: #e8a9b2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+.message {
+  font-size: 20px;
+  margin-top: 10px;
+}
