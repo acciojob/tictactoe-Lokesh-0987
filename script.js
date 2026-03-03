@@ -13,8 +13,8 @@ let gameOver = false;
 
 // Start Game
 submitBtn.addEventListener("click", function () {
-  player1 = document.getElementById("player1").value.trim();
-  player2 = document.getElementById("player2").value.trim();
+  player1 = document.getElementById("player-1").value;
+  player2 = document.getElementById("player-2").value;
 
   if (!player1 || !player2) return;
 
@@ -22,11 +22,10 @@ submitBtn.addEventListener("click", function () {
   game.style.display = "block";
 
   currentPlayer = player1;
-  currentSymbol = "X";
   message.textContent = `${currentPlayer}, you're up`;
 });
 
-// Cell Click Logic
+// Cell Click
 cells.forEach((cell, index) => {
   cell.addEventListener("click", function () {
 
@@ -35,21 +34,13 @@ cells.forEach((cell, index) => {
     boardState[index] = currentSymbol;
     cell.textContent = currentSymbol;
 
-    // ✅ Check Winner
     if (checkWinner()) {
       message.textContent = `${currentPlayer} congratulations you won!`;
       gameOver = true;
       return;
     }
 
-    // ✅ Check Draw
-    if (!boardState.includes("")) {
-      message.textContent = "It's a draw!";
-      gameOver = true;
-      return;
-    }
-
-    // ✅ Switch Player
+    // Switch player
     if (currentSymbol === "X") {
       currentSymbol = "O";
       currentPlayer = player2;
@@ -76,7 +67,7 @@ function checkWinner() {
   ];
 
   return winPatterns.some(pattern => {
-    const [a, b, c] = pattern;
+    const [a,b,c] = pattern;
     return (
       boardState[a] &&
       boardState[a] === boardState[b] &&
