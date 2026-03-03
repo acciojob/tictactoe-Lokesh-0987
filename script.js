@@ -1,37 +1,33 @@
+const player1Input = document.getElementById("player1");
+const player2Input = document.getElementById("player2");
 const submitBtn = document.getElementById("submit");
-const playerForm = document.getElementById("player-form");
-const game = document.getElementById("game");
 const message = document.querySelector(".message");
 const cells = document.querySelectorAll(".cell");
 
+let currentPlayer = "";
+let currentSymbol = "x";
 let player1 = "";
 let player2 = "";
-let currentPlayer = "";
-let currentSymbol = "X";
-let boardState = ["", "", "", "", "", "", "", "", ""];
+let board = ["", "", "", "", "", "", "", "", ""];
 let gameOver = false;
 
-// Start Game
-submitBtn.addEventListener("click", function () {
-  player1 = document.getElementById("player-1").value;
-  player2 = document.getElementById("player-2").value;
+submitBtn.addEventListener("click", () => {
+  player1 = player1Input.value.trim();
+  player2 = player2Input.value.trim();
 
   if (!player1 || !player2) return;
 
-  playerForm.style.display = "none";
-  game.style.display = "block";
-
   currentPlayer = player1;
+  currentSymbol = "x";
+
   message.textContent = `${currentPlayer}, you're up`;
 });
 
-// Cell Click
 cells.forEach((cell, index) => {
-  cell.addEventListener("click", function () {
+  cell.addEventListener("click", () => {
+    if (board[index] !== "" || gameOver) return;
 
-    if (boardState[index] !== "" || gameOver) return;
-
-    boardState[index] = currentSymbol;
+    board[index] = currentSymbol;
     cell.textContent = currentSymbol;
 
     if (checkWinner()) {
@@ -40,12 +36,17 @@ cells.forEach((cell, index) => {
       return;
     }
 
-    // Switch player
-    if (currentSymbol === "X") {
-      currentSymbol = "O";
+    if (!board.includes("")) {
+      message.textContent = "It's a draw!";
+      gameOver = true;
+      return;
+    }
+
+    if (currentSymbol === "x") {
+      currentSymbol = "o";
       currentPlayer = player2;
     } else {
-      currentSymbol = "X";
+      currentSymbol = "x";
       currentPlayer = player1;
     }
 
@@ -53,25 +54,16 @@ cells.forEach((cell, index) => {
   });
 });
 
-// Winner Logic
 function checkWinner() {
-  const winPatterns = [
-    [0,1,2],
-    [3,4,5],
-    [6,7,8],
-    [0,3,6],
-    [1,4,7],
-    [2,5,8],
-    [0,4,8],
-    [2,4,6]
+  const patterns = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
   ];
 
-  return winPatterns.some(pattern => {
-    const [a,b,c] = pattern;
-    return (
-      boardState[a] &&
-      boardState[a] === boardState[b] &&
-      boardState[a] === boardState[c]
-    );
-  });
+  return patterns.some(([a,b,c]) =>
+    board[a] &&
+    board[a] === board[b] &&
+    board[a] === board[c]
+  );
 }
